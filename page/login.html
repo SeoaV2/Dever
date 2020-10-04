@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.css">
+    <link rel="stylesheet" href="/src/css/login.css">
     <title>Dever - Login</title>
   </head>
   <body class="bg-light">
@@ -38,37 +40,6 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://kit.fontawesome.com/1213a7cbad.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.js"></script>
-    <script>
-      const socket = io()
-      
-      function login () {
-        document.cookie = ''
-        if (!document.getElementById('uname').value || !document.getElementById('upasswd').value)
-          alert('아이디와 비밀번호를 입력해 주세요')
-
-        const query = { uname: document.getElementById('uname').value, upasswd: document.getElementById('upasswd').value }
-        socket.emit('login', query)
-        socket.on('login', (res) => {
-          if (!res.success) return alert('아이디 혹은 비밀번호가 틀렸어요!')
-          if (res.regist) {
-            const cfm = confirm('없는 아이디입니다!\n새로운 계정을 만들까요?')
-            if (cfm) socket.emit('regist', query)
-            return
-          }
-          
-          document.cookie = 'token=' + res.token
-          document.cookie = 'me=' + document.getElementById('uname').value
-          window.location.assign('/')
-        })
-
-        return false
-      }
-    </script>
-    <style>
-      html, body {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
+    <script src="/src/js/login.js"></script>
   </body>
 </html>

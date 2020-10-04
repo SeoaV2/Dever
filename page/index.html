@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.css">
-    <link rel="stylesheet" href="/src/github-markdown.css">
+    <link rel="stylesheet" href="/src/css/github-markdown.css">
+    <link rel="stylesheet" href="/src/css/index.css">
     <title>Dever - Chat</title>
   </head>
   <body class="bg-light">
@@ -32,17 +35,23 @@
     <div class="container">
       <div class="tab-content" id="ex1-content">
         <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel">
-          <div id="output" class="markdown-body mb-3">
-            <div id="template" class="d-none">
-    
-              <div class="card m-3">
-                <div class="card-header">{{ username }}</div>
-                <div class="card-body">{{ content }}</div>
-              </div> 
+          <div id="template" class="d-none">
+            <div class="card m-3">
+              <div class="card-header">{{ username }}</div>
+              <div class="card-body">{{ content }}</div>
             </div>
+          </div>
+          <div id="output" class="markdown-body mb-3">
             <!-- Render Point -->
           </div>
-          <textarea id="input" class="form-control" autofocus placeholder="텍스트를 입력하세요"></textarea>
+          <textarea id="input" class="form-control shadow" autofocus placeholder="텍스트를 입력하세요"></textarea>
+          <div class="input-group mt-3 mb-3 col">
+            <span class="input-group-text" id="basic-addon1">#</span>
+            <input class="form-control" type="text" id="channel" placeholder="채널명을 입력해 주세요" value="lobby">
+          </div>
+          <div id="channels">
+            <b>활성화된 채널들:</b>
+          </div>
         </div>
         <div class="tab-pane fade" id="ex1-pills-2" role="tabpanel" aria-labelledby="ex1-tab-2">
           Tab 2 content
@@ -54,53 +63,6 @@
     <script src="https://kit.fontawesome.com/1213a7cbad.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.0/howler.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.js"></script>
-    <script>
-      const socket = io()
-      const ping = new Howl({ src: '/src/ping.mp3' })
-      const me = getCookie('me')
-
-      socket.on('reset', () => {
-        document.cookie = ''
-        document.location.reload()
-      })
-
-      socket.on('message', (author, msg, log, raw) => {
-        if (!log && (raw + ' ').includes('@' + me + ' ')) ping.play()
-        document.getElementById('output').innerHTML += document.getElementById('template').innerHTML.replace('{{ username }}', author).replace('{{ content }}', msg)
-        document.getElementById('output').scrollTo(0, 99999)
-      })
-
-      document.getElementById('input').addEventListener('keypress', (ev) => {
-        if (ev.shiftKey) return
-        if (ev.keyCode === 13) {
-          ev.preventDefault()
-          if (document.getElementById('input').value.length > 100) return alert('글자수는 100자를 넘을 수 없어요')
-          socket.emit('message', getCookie('token'), document.getElementById('input').value)
-          document.getElementById('input').value = ''
-        }
-      })
-
-      function getCookie(name) {
-          var nameEQ = name + "=";
-          var ca = document.cookie.split(';');
-          for(var i=0;i < ca.length;i++) {
-              var c = ca[i];
-              while (c.charAt(0)==' ') c = c.substring(1,c.length);
-              if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-          }
-          return null;
-      }
-    </script>
-    <style>
-      html, body {
-        width: 100%;
-        height: 100%;
-      }
-
-      #output {
-        height: 70vh;
-        overflow-y: scroll;
-      }
-    </style>
+    <script src="/src/js/index.js"></script>
   </body>
 </html>

@@ -1,0 +1,7 @@
+.container > * {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+nav > * {
+  font-family: 'Noto Serif KR', serif;
+}
