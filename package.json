@@ -1,0 +1,12 @@
+{
+  "name": "Dever",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:SeoaV2/Dever.git",
+  "author": "Park Min Hyeok <pmhstudio.pmh@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
