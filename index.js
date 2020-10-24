@@ -9,6 +9,7 @@ const { createServer } = require('http')
 const { Converter } = require('showdown')
 const { get, post } = require('superagent')
 const cookieParser = require('cookie-parser')
+const randomString = require('crypto-random-string')
 const { client_id, client_secret } = require('./config.json').github
 const db = require('knex')({ client: 'mysql', connection: { host: 'localhost', port: 3306, user: 'dever', database: 'dever' } })
 
@@ -35,6 +36,8 @@ app.get('/login/github', async (req, res, _) => {
   
   const user = (await get('https://api.github.com/user').set('user-agent', 'Dever v1').set('Authorization', 'token ' + acctoken)).body
   if (!user) return
+
+  await db.update({ upasswd: sha256(randomString({ length: 30 })) }).where('uname', user.login).from('users')
 
   const token = uuid()
   tokenList.push({ token, uname: user.login })
